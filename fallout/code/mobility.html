@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>fallout&#x2F;code&#x2F;mobility.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="fallout/code/mobility.html#define">Define Details</a></header>
+<main>
+<h1>fallout/code/mobility.dm 
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_MOVE">MOBILITY_MOVE</a></th><td>can move</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_STAND">MOBILITY_STAND</a></th><td>can, and is, standing up.</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_PICKUP">MOBILITY_PICKUP</a></th><td>can pickup items</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_USE">MOBILITY_USE</a></th><td>can use items and interact with world objects like opening closets/etc</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_UI">MOBILITY_UI</a></th><td>can use interfaces like consoles</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_STORAGE">MOBILITY_STORAGE</a></th><td>can use storage item</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_PULL">MOBILITY_PULL</a></th><td>can pull things</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_HOLD">MOBILITY_HOLD</a></th><td>can hold non-nodropped items voluntarily</td></tr>
+        <tr><th><a href="fallout/code/mobility.html#define/MOBILITY_RESIST">MOBILITY_RESIST</a></th><td>Can resist out of buckling, grabs, cuffs, etc, in the usual order (buckle --&gt; cuffs --&gt; grab)</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/MOBILITY_HOLD"><aside class="declaration">#define </aside>MOBILITY_HOLD
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L19">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 19"/></a>
+    </h3>
+    <p>can hold non-nodropped items voluntarily</p><h3 id="define/MOBILITY_MOVE"><aside class="declaration">#define </aside>MOBILITY_MOVE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L5">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 5"/></a>
+    </h3>
+    <p>can move</p><h3 id="define/MOBILITY_PICKUP"><aside class="declaration">#define </aside>MOBILITY_PICKUP
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L9">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 9"/></a>
+    </h3>
+    <p>can pickup items</p><h3 id="define/MOBILITY_PULL"><aside class="declaration">#define </aside>MOBILITY_PULL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L17">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 17"/></a>
+    </h3>
+    <p>can pull things</p><h3 id="define/MOBILITY_RESIST"><aside class="declaration">#define </aside>MOBILITY_RESIST
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L21">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 21"/></a>
+    </h3>
+    <p>Can resist out of buckling, grabs, cuffs, etc, in the usual order (buckle --&gt; cuffs --&gt; grab)</p><h3 id="define/MOBILITY_STAND"><aside class="declaration">#define </aside>MOBILITY_STAND
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L7">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 7"/></a>
+    </h3>
+    <p>can, and is, standing up.</p><h3 id="define/MOBILITY_STORAGE"><aside class="declaration">#define </aside>MOBILITY_STORAGE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L15">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 15"/></a>
+    </h3>
+    <p>can use storage item</p><h3 id="define/MOBILITY_UI"><aside class="declaration">#define </aside>MOBILITY_UI
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L13">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 13"/></a>
+    </h3>
+    <p>can use interfaces like consoles</p><h3 id="define/MOBILITY_USE"><aside class="declaration">#define </aside>MOBILITY_USE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mobility.dm#L11">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mobility.dm 11"/></a>
+    </h3>
+    <p>can use items and interact with world objects like opening closets/etc</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

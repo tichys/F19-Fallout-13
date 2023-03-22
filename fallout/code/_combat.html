@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>fallout&#x2F;code&#x2F;_combat.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="fallout/code/_combat.html#define">Define Details</a></header>
+<main>
+<h1>fallout/code/_combat.dm 
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_NEAR_SOFTCRIT">STAMINA_NEAR_SOFTCRIT</a></th><td>Threshold over which attacks start being hindered.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_SOFTCRIT">STAMINA_SOFTCRIT</a></th><td>softcrit for stamina damage. prevents standing up, some actions that cost stamina, etc, but doesn't force a rest or stop movement</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_NEAR_CRIT">STAMINA_NEAR_CRIT</a></th><td>sanity cap to prevent stamina actions (that are still performable) from sending you into crit.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_CRIT">STAMINA_CRIT</a></th><td>crit for stamina damage. forces a rest, and stops movement until stamina goes back to stamina softcrit</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAGS_DEFAULT">COMBAT_FLAGS_DEFAULT</a></th><td>Default combat flags for those affected by sprinting (combat mode has been made into its own component)</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAGS_SPRINT_EXEMPT">COMBAT_FLAGS_SPRINT_EXEMPT</a></th><td>Default combat flags for everyone else (so literally everyone but humans).</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_SPRINT_TOGGLED">COMBAT_FLAG_SPRINT_TOGGLED</a></th><td>The user wants sprint mode on</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_SPRINT_ACTIVE">COMBAT_FLAG_SPRINT_ACTIVE</a></th><td>Sprint is currently active</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_ATTEMPTING_CRAWL">COMBAT_FLAG_ATTEMPTING_CRAWL</a></th><td>Currently attempting to crawl under someone</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_HARD_STAMCRIT">COMBAT_FLAG_HARD_STAMCRIT</a></th><td>Currently stamcritted</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_RESISTING_REST">COMBAT_FLAG_RESISTING_REST</a></th><td>Currently attempting to resist up from the ground</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_INTENTIONALLY_RESTING">COMBAT_FLAG_INTENTIONALLY_RESTING</a></th><td>Intentionally resting</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_SOFT_STAMCRIT">COMBAT_FLAG_SOFT_STAMCRIT</a></th><td>Currently stamcritted but not as violently</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_SPRINT_FORCED">COMBAT_FLAG_SPRINT_FORCED</a></th><td>Force sprint mode on at all times, overrides everything including sprint disable traits.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_PARRY_CAPABLE">COMBAT_FLAG_PARRY_CAPABLE</a></th><td>This mob is capable of using the active parrying system.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_BLOCK_CAPABLE">COMBAT_FLAG_BLOCK_CAPABLE</a></th><td>This mob is capable of using the active blocking system.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_UNARMED_PARRY">COMBAT_FLAG_UNARMED_PARRY</a></th><td>This mob is capable of unarmed parrying</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_ACTIVE_BLOCKING">COMBAT_FLAG_ACTIVE_BLOCKING</a></th><td>This mob is currently actively blocking</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/COMBAT_FLAG_ACTIVE_BLOCK_STARTING">COMBAT_FLAG_ACTIVE_BLOCK_STARTING</a></th><td>This mob is currently starting an active block</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_NEAR_SOFTCRIT">STAMINA_NEAR_SOFTCRIT</a></th><td>Threshold over which attacks start being hindered.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_SOFTCRIT">STAMINA_SOFTCRIT</a></th><td>softcrit for stamina damage. prevents standing up, some actions that cost stamina, etc, but doesn't force a rest or stop movement</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_NEAR_CRIT">STAMINA_NEAR_CRIT</a></th><td>sanity cap to prevent stamina actions (that are still performable) from sending you into crit.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_CRIT">STAMINA_CRIT</a></th><td>crit for stamina damage. forces a rest, and stops movement until stamina goes back to stamina softcrit</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_SOFTCRIT_TRADITIONAL">STAMINA_SOFTCRIT_TRADITIONAL</a></th><td>same as STAMINA_SOFTCRIT except for the more traditional health calculations</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAMINA_CRIT_TRADITIONAL">STAMINA_CRIT_TRADITIONAL</a></th><td>ditto, but for STAMINA_CRIT</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SHOVE_STAGGER_DURATION">SHOVE_STAGGER_DURATION</a></th><td>how long they're staggered for</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SHOVE_OFFBALANCE_DURATION">SHOVE_OFFBALANCE_DURATION</a></th><td>how long they're off balance for</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SUPPRESSED_QUIET">SUPPRESSED_QUIET</a></th><td>standard suppressed</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SUPPRESSED_VERY">SUPPRESSED_VERY</a></th><td>no message</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAM_CRIT_ITEM_ATTACK_PENALTY">STAM_CRIT_ITEM_ATTACK_PENALTY</a></th><td>Multiplier of the (STAMINA_NEAR_CRIT - user current stamina loss) : (STAMINA_NEAR_CRIT - STAMINA_SOFTCRIT) ratio used in damage penalties when stam soft-critted.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAM_CRIT_ITEM_ATTACK_DELAY">STAM_CRIT_ITEM_ATTACK_DELAY</a></th><td>changeNext_move penalty multiplier of the above.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/LYING_DAMAGE_PENALTY">LYING_DAMAGE_PENALTY</a></th><td>Damage penalty when fighting prone.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/STAM_CRIT_GUN_DELAY">STAM_CRIT_GUN_DELAY</a></th><td>Added delay when firing guns stam-softcritted. Summed with a hardset CLICK_CD_RANGE delay, similar to STAM_CRIT_DAMAGE_DELAY otherwise.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/FEEBLE_ATTACK_MSG_THRESHOLD">FEEBLE_ATTACK_MSG_THRESHOLD</a></th><td>should the current-attack-damage be lower than the item force multiplied by this value,
+a &quot;inefficiently&quot; prefix will be added to the message.</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_PISTOL_LIGHT">BULLET_DAMAGE_PISTOL_LIGHT</a></th><td>Bullet damage defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_PENETRATION_LOW">BULLET_PENETRATION_LOW</a></th><td>Bullet penetraion defines - For HEAVY and POWER ARMOR, low can't pen either, heavy can pierce heavy but not PA and absolute penetrates everything</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DT_PENETRATION_PISTOL">BULLET_DT_PENETRATION_PISTOL</a></th><td>Bullet DT penetration defines - How much DT a bullet can straight up ignore, don't confuse with the armor penetration</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_FALLOFF">BULLET_FALLOFF</a></th><td>Bullet damage falloff per tile defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_FALLOFF_START">BULLET_FALLOFF_START</a></th><td>Bullet damage falloff starting distance defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_FALLOFF_DEFAULT_PISTOL_LIGHT">BULLET_FALLOFF_DEFAULT_PISTOL_LIGHT</a></th><td>Bullet damage falloff default defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_FALLOFF_MIN_DAMAGE">BULLET_FALLOFF_MIN_DAMAGE</a></th><td>Minimum bullet damage that falloff can take it to</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_RECOIL_PISTOL_LIGHT">BULLET_RECOIL_PISTOL_LIGHT</a></th><td>Bullet recoil defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/RUBBERY_DAMAGE_MULT">RUBBERY_DAMAGE_MULT</a></th><td>Rubber bullet damage multiplier</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_STAMINA_PISTOL_LIGHT">BULLET_STAMINA_PISTOL_LIGHT</a></th><td>Bullet stamloss defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/RUBBERY_STAMINA_PISTOL_LIGHT">RUBBERY_STAMINA_PISTOL_LIGHT</a></th><td>Rubber/beanbag stamloss defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SHOTGUN_PELLET_BASE">SHOTGUN_PELLET_BASE</a></th><td>Shotgun pellet count defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SHOTGUN_SPREAD_BASE">SHOTGUN_SPREAD_BASE</a></th><td>Shotgun pellet spread defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_MATCH_MULT">BULLET_MATCH_MULT</a></th><td>Bullet damage modifier defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_SPREAD_BASE">BULLET_SPREAD_BASE</a></th><td>Bullet spread modifier defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_SPREAD_MATCH">BULLET_SPREAD_MATCH</a></th><td>Bullet spread modifier defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_WOUND_PISTOL_LIGHT">BULLET_WOUND_PISTOL_LIGHT</a></th><td>Bullet wound modifier defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/RUBBERY_WOUND_PISTOL_LIGHT">RUBBERY_WOUND_PISTOL_LIGHT</a></th><td>Rubber wound modifier defines
+intended to break bones, dont make beanbags sharp or everyone dies</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_WOUND_FALLOFF_PISTOL_LIGHT">BULLET_WOUND_FALLOFF_PISTOL_LIGHT</a></th><td>Bullet wound falloff defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_NAKED_RUBBERY_WOUND_MULT">BULLET_NAKED_RUBBERY_WOUND_MULT</a></th><td>If you're naked, more wounds</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_SPEED_BASE">BULLET_SPEED_BASE</a></th><td>Bullet speed defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_ACID">BULLET_DAMAGE_ACID</a></th><td>Bullet ammo type multiplier defines
+Acid ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_FIRE">BULLET_DAMAGE_FIRE</a></th><td>Fire ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_SHOCK">BULLET_DAMAGE_SHOCK</a></th><td>Shock ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_MICROSHRAPNEL">BULLET_DAMAGE_MICROSHRAPNEL</a></th><td>Microshapnel ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_EXPLOSIVE">BULLET_DAMAGE_EXPLOSIVE</a></th><td>Explosive ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/BULLET_DAMAGE_POISON">BULLET_DAMAGE_POISON</a></th><td>Poison ammo</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_FIREMODE_SEMIAUTO">GUN_FIREMODE_SEMIAUTO</a></th><td>Gun Firemodes</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_RECOIL_MAX_SPREAD">GUN_RECOIL_MAX_SPREAD</a></th><td>Max spread recoil can add</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/SAWEDOFF_RECOIL_MULT">SAWEDOFF_RECOIL_MULT</a></th><td>Sawed-off recoil modifier</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/HOBO_RECOIL_MULT">HOBO_RECOIL_MULT</a></th><td>Hobogun recoil modifier</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_RECOIL_NONE">GUN_RECOIL_NONE</a></th><td>Gun recoil modifier per shot defines</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_RECOIL_TIMEOUT_BASE">GUN_RECOIL_TIMEOUT_BASE</a></th><td>Gun recoil timeout Base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_RECOIL_TIMEOUT_INSTANT">GUN_RECOIL_TIMEOUT_INSTANT</a></th><td>Gun recoil timeout modifiers</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_SPREAD_BASE">GUN_SPREAD_BASE</a></th><td>Gun spread Base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_SPREAD_NONE">GUN_SPREAD_NONE</a></th><td>Gun spread modifiers</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_FIRE_DELAY_BASE">GUN_FIRE_DELAY_BASE</a></th><td>Gun fire delay Base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_FIRE_DELAY_FASTEST">GUN_FIRE_DELAY_FASTEST</a></th><td>Gun fire delay modifiers</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/MOB_AUTOFIRE_DELAY_BASE">MOB_AUTOFIRE_DELAY_BASE</a></th><td>Mob autofire delay Base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/MOB_AUTOFIRE_DELAY_FASTEST">MOB_AUTOFIRE_DELAY_FASTEST</a></th><td>Mob fire delay modifiers</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_BURSTFIRE_DELAY_BASE">GUN_BURSTFIRE_DELAY_BASE</a></th><td>Gun burstfire delay Base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_AIMING_TIME">GUN_AIMING_TIME</a></th><td>Time after you draw a gun that you're able to shoot it</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_DRAW_QUICK">GUN_DRAW_QUICK</a></th><td>Gun draw time modifiers</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_ONE_HAND_AKIMBO">GUN_ONE_HAND_AKIMBO</a></th><td>Gun weapon weight</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_EXTRA_DAMAGE_0">GUN_EXTRA_DAMAGE_0</a></th><td>Gun bullet damage base
+Multiplies the gun's projectile damage</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_LESS_DAMAGE_T1">GUN_LESS_DAMAGE_T1</a></th><td>Also multiplies the gun's projectile damage, but so it does less damage</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_MELEE_FORCE_BASE">GUN_MELEE_FORCE_BASE</a></th><td>Gun melee force base</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_MELEE_FORCE_PISTOL_LIGHT">GUN_MELEE_FORCE_PISTOL_LIGHT</a></th><td>Gun weapon weight</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_SLOWDOWN_NONE">GUN_SLOWDOWN_NONE</a></th><td>Gun slowdown</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_RIFLEMAN_REFIRE_DELAY_MULT">GUN_RIFLEMAN_REFIRE_DELAY_MULT</a></th><td>Refire speed multiplier for manual action guns, cus we no longer care about your cock length</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_AUTOPUMP_REFIRE_DELAY_MULT">GUN_AUTOPUMP_REFIRE_DELAY_MULT</a></th><td>Refire speed multiplier for manual action guns if you're not a pr0 and click-to-cycle it</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_PRECISION">ZONE_WEIGHT_PRECISION</a></th><td>Bullet zone favoring defines
+High accuracy, generally goes where you mean to put it, for precision rifles and such</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_SEMI_AUTO">ZONE_WEIGHT_SEMI_AUTO</a></th><td>Typical accuracy, based a bit on range</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_AUTOMATIC">ZONE_WEIGHT_AUTOMATIC</a></th><td>Heavily weights limbs after its effective distance</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_SHOTGUN">ZONE_WEIGHT_SHOTGUN</a></th><td>Always weights limbs heavily</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_GUNS_CHOICE">ZONE_WEIGHT_GUNS_CHOICE</a></th><td>Always defers to the gun's setting, defaults to semi-auto if not defined</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_FALLOFF_SEMI_AUTO">ZONE_WEIGHT_FALLOFF_SEMI_AUTO</a></th><td>Typical accuracy falloff</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_FALLOFF_AUTOMATIC">ZONE_WEIGHT_FALLOFF_AUTOMATIC</a></th><td>Zone accuracy falls off quickly</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_FALLOFF_SHOTGUN">ZONE_WEIGHT_FALLOFF_SHOTGUN</a></th><td>You're hitting limbs most of the time</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_LIST_DEFAULT">ZONE_WEIGHT_LIST_DEFAULT</a></th><td>Default zone weight list</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_LIST_PRECISION">ZONE_WEIGHT_LIST_PRECISION</a></th><td>Precision zone weight list</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_LIST_AUTOMATIC">ZONE_WEIGHT_LIST_AUTOMATIC</a></th><td>Autofire zone weight list</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/ZONE_WEIGHT_LIST_SHOTGUN">ZONE_WEIGHT_LIST_SHOTGUN</a></th><td>Pellet zone weight list / Who actually aims for LEGS with a shotgun aim for center mass</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/AFFECTED_BY_FAST_PUMP">AFFECTED_BY_FAST_PUMP</a></th><td>Gun skill flags
+Gun is affected by rifleman skill</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/AFFECTED_BY_AUTO_PUMP">AFFECTED_BY_AUTO_PUMP</a></th><td>If you autopump this gun, it'll have a debuff to its refire rate till you fire again</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_AUTO_PUMPED">GUN_AUTO_PUMPED</a></th><td>Gun cooldown mod flags
+Gun is slower to refire if you autopump it (without fast pump)</td></tr>
+        <tr><th><a href="fallout/code/_combat.html#define/GUN_EJECTOR_RIGHT">GUN_EJECTOR_RIGHT</a></th><td>Gun handedness defines -- for picking which direction to toss casings</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/AFFECTED_BY_AUTO_PUMP"><aside class="declaration">#define </aside>AFFECTED_BY_AUTO_PUMP
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L782">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 782"/></a>
+    </h3>
+    <p>If you autopump this gun, it'll have a debuff to its refire rate till you fire again</p><h3 id="define/AFFECTED_BY_FAST_PUMP"><aside class="declaration">#define </aside>AFFECTED_BY_FAST_PUMP
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L780">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 780"/></a>
+    </h3>
+    <p>Gun skill flags
+Gun is affected by rifleman skill</p><h3 id="define/BULLET_DAMAGE_ACID"><aside class="declaration">#define </aside>BULLET_DAMAGE_ACID
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L492">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 492"/></a>
+    </h3>
+    <p>Bullet ammo type multiplier defines
+Acid ammo</p><h3 id="define/BULLET_DAMAGE_EXPLOSIVE"><aside class="declaration">#define </aside>BULLET_DAMAGE_EXPLOSIVE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L516">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 516"/></a>
+    </h3>
+    <p>Explosive ammo</p><h3 id="define/BULLET_DAMAGE_FIRE"><aside class="declaration">#define </aside>BULLET_DAMAGE_FIRE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L498">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 498"/></a>
+    </h3>
+    <p>Fire ammo</p><h3 id="define/BULLET_DAMAGE_MICROSHRAPNEL"><aside class="declaration">#define </aside>BULLET_DAMAGE_MICROSHRAPNEL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L510">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 510"/></a>
+    </h3>
+    <p>Microshapnel ammo</p><h3 id="define/BULLET_DAMAGE_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_DAMAGE_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L328">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 328"/></a>
+    </h3>
+    <p>Bullet damage defines</p><h3 id="define/BULLET_DAMAGE_POISON"><aside class="declaration">#define </aside>BULLET_DAMAGE_POISON
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L522">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 522"/></a>
+    </h3>
+    <p>Poison ammo</p><h3 id="define/BULLET_DAMAGE_SHOCK"><aside class="declaration">#define </aside>BULLET_DAMAGE_SHOCK
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L504">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 504"/></a>
+    </h3>
+    <p>Shock ammo</p><h3 id="define/BULLET_DT_PENETRATION_PISTOL"><aside class="declaration">#define </aside>BULLET_DT_PENETRATION_PISTOL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L344">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 344"/></a>
+    </h3>
+    <p>Bullet DT penetration defines - How much DT a bullet can straight up ignore, don't confuse with the armor penetration</p><h3 id="define/BULLET_FALLOFF"><aside class="declaration">#define </aside>BULLET_FALLOFF
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L354">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 354"/></a>
+    </h3>
+    <p>Bullet damage falloff per tile defines</p><h3 id="define/BULLET_FALLOFF_DEFAULT_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_FALLOFF_DEFAULT_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L376">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 376"/></a>
+    </h3>
+    <p>Bullet damage falloff default defines</p><h3 id="define/BULLET_FALLOFF_MIN_DAMAGE"><aside class="declaration">#define </aside>BULLET_FALLOFF_MIN_DAMAGE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L386">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 386"/></a>
+    </h3>
+    <p>Minimum bullet damage that falloff can take it to</p><h3 id="define/BULLET_FALLOFF_START"><aside class="declaration">#define </aside>BULLET_FALLOFF_START
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L365">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 365"/></a>
+    </h3>
+    <p>Bullet damage falloff starting distance defines</p><h3 id="define/BULLET_MATCH_MULT"><aside class="declaration">#define </aside>BULLET_MATCH_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L430">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 430"/></a>
+    </h3>
+    <p>Bullet damage modifier defines</p><h3 id="define/BULLET_NAKED_RUBBERY_WOUND_MULT"><aside class="declaration">#define </aside>BULLET_NAKED_RUBBERY_WOUND_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L475">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 475"/></a>
+    </h3>
+    <p>If you're naked, more wounds</p><h3 id="define/BULLET_PENETRATION_LOW"><aside class="declaration">#define </aside>BULLET_PENETRATION_LOW
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L339">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 339"/></a>
+    </h3>
+    <p>Bullet penetraion defines - For HEAVY and POWER ARMOR, low can't pen either, heavy can pierce heavy but not PA and absolute penetrates everything</p><h3 id="define/BULLET_RECOIL_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_RECOIL_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L389">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 389"/></a>
+    </h3>
+    <p>Bullet recoil defines</p><h3 id="define/BULLET_SPEED_BASE"><aside class="declaration">#define </aside>BULLET_SPEED_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L479">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 479"/></a>
+    </h3>
+    <p>Bullet speed defines</p><h3 id="define/BULLET_SPREAD_BASE"><aside class="declaration">#define </aside>BULLET_SPREAD_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L435">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 435"/></a>
+    </h3>
+    <p>Bullet spread modifier defines</p><h3 id="define/BULLET_SPREAD_MATCH"><aside class="declaration">#define </aside>BULLET_SPREAD_MATCH
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L438">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 438"/></a>
+    </h3>
+    <p>Bullet spread modifier defines</p><h3 id="define/BULLET_STAMINA_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_STAMINA_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L402">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 402"/></a>
+    </h3>
+    <p>Bullet stamloss defines</p><h3 id="define/BULLET_WOUND_FALLOFF_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_WOUND_FALLOFF_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L465">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 465"/></a>
+    </h3>
+    <p>Bullet wound falloff defines</p><h3 id="define/BULLET_WOUND_PISTOL_LIGHT"><aside class="declaration">#define </aside>BULLET_WOUND_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L443">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 443"/></a>
+    </h3>
+    <p>Bullet wound modifier defines</p><h3 id="define/COMBAT_FLAGS_DEFAULT"><aside class="declaration">#define </aside>COMBAT_FLAGS_DEFAULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L61">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 61"/></a>
+    </h3>
+    <p>Default combat flags for those affected by sprinting (combat mode has been made into its own component)</p><h3 id="define/COMBAT_FLAGS_SPRINT_EXEMPT"><aside class="declaration">#define </aside>COMBAT_FLAGS_SPRINT_EXEMPT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L63">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 63"/></a>
+    </h3>
+    <p>Default combat flags for everyone else (so literally everyone but humans).</p><h3 id="define/COMBAT_FLAG_ACTIVE_BLOCKING"><aside class="declaration">#define </aside>COMBAT_FLAG_ACTIVE_BLOCKING
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L88">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 88"/></a>
+    </h3>
+    <p>This mob is currently actively blocking</p><h3 id="define/COMBAT_FLAG_ACTIVE_BLOCK_STARTING"><aside class="declaration">#define </aside>COMBAT_FLAG_ACTIVE_BLOCK_STARTING
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L90">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 90"/></a>
+    </h3>
+    <p>This mob is currently starting an active block</p><h3 id="define/COMBAT_FLAG_ATTEMPTING_CRAWL"><aside class="declaration">#define </aside>COMBAT_FLAG_ATTEMPTING_CRAWL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L70">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 70"/></a>
+    </h3>
+    <p>Currently attempting to crawl under someone</p><h3 id="define/COMBAT_FLAG_BLOCK_CAPABLE"><aside class="declaration">#define </aside>COMBAT_FLAG_BLOCK_CAPABLE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L84">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 84"/></a>
+    </h3>
+    <p>This mob is capable of using the active blocking system.</p><h3 id="define/COMBAT_FLAG_HARD_STAMCRIT"><aside class="declaration">#define </aside>COMBAT_FLAG_HARD_STAMCRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L72">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 72"/></a>
+    </h3>
+    <p>Currently stamcritted</p><h3 id="define/COMBAT_FLAG_INTENTIONALLY_RESTING"><aside class="declaration">#define </aside>COMBAT_FLAG_INTENTIONALLY_RESTING
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L76">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 76"/></a>
+    </h3>
+    <p>Intentionally resting</p><h3 id="define/COMBAT_FLAG_PARRY_CAPABLE"><aside class="declaration">#define </aside>COMBAT_FLAG_PARRY_CAPABLE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L82">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 82"/></a>
+    </h3>
+    <p>This mob is capable of using the active parrying system.</p><h3 id="define/COMBAT_FLAG_RESISTING_REST"><aside class="declaration">#define </aside>COMBAT_FLAG_RESISTING_REST
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L74">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 74"/></a>
+    </h3>
+    <p>Currently attempting to resist up from the ground</p><h3 id="define/COMBAT_FLAG_SOFT_STAMCRIT"><aside class="declaration">#define </aside>COMBAT_FLAG_SOFT_STAMCRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L78">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 78"/></a>
+    </h3>
+    <p>Currently stamcritted but not as violently</p><h3 id="define/COMBAT_FLAG_SPRINT_ACTIVE"><aside class="declaration">#define </aside>COMBAT_FLAG_SPRINT_ACTIVE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L68">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 68"/></a>
+    </h3>
+    <p>Sprint is currently active</p><h3 id="define/COMBAT_FLAG_SPRINT_FORCED"><aside class="declaration">#define </aside>COMBAT_FLAG_SPRINT_FORCED
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L80">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 80"/></a>
+    </h3>
+    <p>Force sprint mode on at all times, overrides everything including sprint disable traits.</p><h3 id="define/COMBAT_FLAG_SPRINT_TOGGLED"><aside class="declaration">#define </aside>COMBAT_FLAG_SPRINT_TOGGLED
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L66">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 66"/></a>
+    </h3>
+    <p>The user wants sprint mode on</p><h3 id="define/COMBAT_FLAG_UNARMED_PARRY"><aside class="declaration">#define </aside>COMBAT_FLAG_UNARMED_PARRY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L86">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 86"/></a>
+    </h3>
+    <p>This mob is capable of unarmed parrying</p><h3 id="define/FEEBLE_ATTACK_MSG_THRESHOLD"><aside class="declaration">#define </aside>FEEBLE_ATTACK_MSG_THRESHOLD
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L321">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 321"/></a>
+    </h3>
+    <p>should the current-attack-damage be lower than the item force multiplied by this value,
+a &quot;inefficiently&quot; prefix will be added to the message.</p><h3 id="define/GUN_AIMING_TIME"><aside class="declaration">#define </aside>GUN_AIMING_TIME
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L624">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 624"/></a>
+    </h3>
+    <p>Time after you draw a gun that you're able to shoot it</p><h3 id="define/GUN_AUTOPUMP_REFIRE_DELAY_MULT"><aside class="declaration">#define </aside>GUN_AUTOPUMP_REFIRE_DELAY_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L689">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 689"/></a>
+    </h3>
+    <p>Refire speed multiplier for manual action guns if you're not a pr0 and click-to-cycle it</p><h3 id="define/GUN_AUTO_PUMPED"><aside class="declaration">#define </aside>GUN_AUTO_PUMPED
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L786">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 786"/></a>
+    </h3>
+    <p>Gun cooldown mod flags
+Gun is slower to refire if you autopump it (without fast pump)</p><h3 id="define/GUN_BURSTFIRE_DELAY_BASE"><aside class="declaration">#define </aside>GUN_BURSTFIRE_DELAY_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L621">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 621"/></a>
+    </h3>
+    <p>Gun burstfire delay Base</p><h3 id="define/GUN_DRAW_QUICK"><aside class="declaration">#define </aside>GUN_DRAW_QUICK
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L627">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 627"/></a>
+    </h3>
+    <p>Gun draw time modifiers</p><h3 id="define/GUN_EJECTOR_RIGHT"><aside class="declaration">#define </aside>GUN_EJECTOR_RIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L790">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 790"/></a>
+    </h3>
+    <p>Gun handedness defines -- for picking which direction to toss casings</p><h3 id="define/GUN_EXTRA_DAMAGE_0"><aside class="declaration">#define </aside>GUN_EXTRA_DAMAGE_0
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L638">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 638"/></a>
+    </h3>
+    <p>Gun bullet damage base
+Multiplies the gun's projectile damage</p><h3 id="define/GUN_FIREMODE_SEMIAUTO"><aside class="declaration">#define </aside>GUN_FIREMODE_SEMIAUTO
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L532">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 532"/></a>
+    </h3>
+    <p>Gun Firemodes</p><h3 id="define/GUN_FIRE_DELAY_BASE"><aside class="declaration">#define </aside>GUN_FIRE_DELAY_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L598">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 598"/></a>
+    </h3>
+    <p>Gun fire delay Base</p><h3 id="define/GUN_FIRE_DELAY_FASTEST"><aside class="declaration">#define </aside>GUN_FIRE_DELAY_FASTEST
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L601">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 601"/></a>
+    </h3>
+    <p>Gun fire delay modifiers</p><h3 id="define/GUN_LESS_DAMAGE_T1"><aside class="declaration">#define </aside>GUN_LESS_DAMAGE_T1
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L646">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 646"/></a>
+    </h3>
+    <p>Also multiplies the gun's projectile damage, but so it does less damage</p><h3 id="define/GUN_MELEE_FORCE_BASE"><aside class="declaration">#define </aside>GUN_MELEE_FORCE_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L654">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 654"/></a>
+    </h3>
+    <p>Gun melee force base</p><h3 id="define/GUN_MELEE_FORCE_PISTOL_LIGHT"><aside class="declaration">#define </aside>GUN_MELEE_FORCE_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L657">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 657"/></a>
+    </h3>
+    <p>Gun weapon weight</p><h3 id="define/GUN_ONE_HAND_AKIMBO"><aside class="declaration">#define </aside>GUN_ONE_HAND_AKIMBO
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L632">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 632"/></a>
+    </h3>
+    <p>Gun weapon weight</p><h3 id="define/GUN_RECOIL_MAX_SPREAD"><aside class="declaration">#define </aside>GUN_RECOIL_MAX_SPREAD
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L537">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 537"/></a>
+    </h3>
+    <p>Max spread recoil can add</p><h3 id="define/GUN_RECOIL_NONE"><aside class="declaration">#define </aside>GUN_RECOIL_NONE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L555">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 555"/></a>
+    </h3>
+    <p>Gun recoil modifier per shot defines</p><h3 id="define/GUN_RECOIL_TIMEOUT_BASE"><aside class="declaration">#define </aside>GUN_RECOIL_TIMEOUT_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L578">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 578"/></a>
+    </h3>
+    <p>Gun recoil timeout Base</p><h3 id="define/GUN_RECOIL_TIMEOUT_INSTANT"><aside class="declaration">#define </aside>GUN_RECOIL_TIMEOUT_INSTANT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L581">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 581"/></a>
+    </h3>
+    <p>Gun recoil timeout modifiers</p><h3 id="define/GUN_RIFLEMAN_REFIRE_DELAY_MULT"><aside class="declaration">#define </aside>GUN_RIFLEMAN_REFIRE_DELAY_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L686">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 686"/></a>
+    </h3>
+    <p>Refire speed multiplier for manual action guns, cus we no longer care about your cock length</p><h3 id="define/GUN_SLOWDOWN_NONE"><aside class="declaration">#define </aside>GUN_SLOWDOWN_NONE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L664">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 664"/></a>
+    </h3>
+    <p>Gun slowdown</p><h3 id="define/GUN_SPREAD_BASE"><aside class="declaration">#define </aside>GUN_SPREAD_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L588">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 588"/></a>
+    </h3>
+    <p>Gun spread Base</p><h3 id="define/GUN_SPREAD_NONE"><aside class="declaration">#define </aside>GUN_SPREAD_NONE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L591">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 591"/></a>
+    </h3>
+    <p>Gun spread modifiers</p><h3 id="define/HOBO_RECOIL_MULT"><aside class="declaration">#define </aside>HOBO_RECOIL_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L543">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 543"/></a>
+    </h3>
+    <p>Hobogun recoil modifier</p><h3 id="define/LYING_DAMAGE_PENALTY"><aside class="declaration">#define </aside>LYING_DAMAGE_PENALTY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L307">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 307"/></a>
+    </h3>
+    <p>Damage penalty when fighting prone.</p><h3 id="define/MOB_AUTOFIRE_DELAY_BASE"><aside class="declaration">#define </aside>MOB_AUTOFIRE_DELAY_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L610">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 610"/></a>
+    </h3>
+    <p>Mob autofire delay Base</p><h3 id="define/MOB_AUTOFIRE_DELAY_FASTEST"><aside class="declaration">#define </aside>MOB_AUTOFIRE_DELAY_FASTEST
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L613">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 613"/></a>
+    </h3>
+    <p>Mob fire delay modifiers</p><h3 id="define/RUBBERY_DAMAGE_MULT"><aside class="declaration">#define </aside>RUBBERY_DAMAGE_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L399">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 399"/></a>
+    </h3>
+    <p>Rubber bullet damage multiplier</p><h3 id="define/RUBBERY_STAMINA_PISTOL_LIGHT"><aside class="declaration">#define </aside>RUBBERY_STAMINA_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L412">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 412"/></a>
+    </h3>
+    <p>Rubber/beanbag stamloss defines</p><h3 id="define/RUBBERY_WOUND_PISTOL_LIGHT"><aside class="declaration">#define </aside>RUBBERY_WOUND_PISTOL_LIGHT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L455">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 455"/></a>
+    </h3>
+    <p>Rubber wound modifier defines
+intended to break bones, dont make beanbags sharp or everyone dies</p><h3 id="define/SAWEDOFF_RECOIL_MULT"><aside class="declaration">#define </aside>SAWEDOFF_RECOIL_MULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L540">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 540"/></a>
+    </h3>
+    <p>Sawed-off recoil modifier</p><h3 id="define/SHOTGUN_PELLET_BASE"><aside class="declaration">#define </aside>SHOTGUN_PELLET_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L422">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 422"/></a>
+    </h3>
+    <p>Shotgun pellet count defines</p><h3 id="define/SHOTGUN_SPREAD_BASE"><aside class="declaration">#define </aside>SHOTGUN_SPREAD_BASE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L426">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 426"/></a>
+    </h3>
+    <p>Shotgun pellet spread defines</p><h3 id="define/SHOVE_OFFBALANCE_DURATION"><aside class="declaration">#define </aside>SHOVE_OFFBALANCE_DURATION
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L187">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 187"/></a>
+    </h3>
+    <p>how long they're off balance for</p><h3 id="define/SHOVE_STAGGER_DURATION"><aside class="declaration">#define </aside>SHOVE_STAGGER_DURATION
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L185">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 185"/></a>
+    </h3>
+    <p>how long they're staggered for</p><h3 id="define/STAMINA_CRIT"><aside class="declaration">#define </aside>STAMINA_CRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L109">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 109"/></a>
+    </h3>
+    <p>crit for stamina damage. forces a rest, and stops movement until stamina goes back to stamina softcrit</p><h3 id="define/STAMINA_CRIT_TRADITIONAL"><aside class="declaration">#define </aside>STAMINA_CRIT_TRADITIONAL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L113">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 113"/></a>
+    </h3>
+    <p>ditto, but for STAMINA_CRIT</p><h3 id="define/STAMINA_NEAR_CRIT"><aside class="declaration">#define </aside>STAMINA_NEAR_CRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L107">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 107"/></a>
+    </h3>
+    <p>sanity cap to prevent stamina actions (that are still performable) from sending you into crit.</p><h3 id="define/STAMINA_NEAR_SOFTCRIT"><aside class="declaration">#define </aside>STAMINA_NEAR_SOFTCRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L103">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 103"/></a>
+    </h3>
+    <p>Threshold over which attacks start being hindered.</p><h3 id="define/STAMINA_SOFTCRIT"><aside class="declaration">#define </aside>STAMINA_SOFTCRIT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L105">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 105"/></a>
+    </h3>
+    <p>softcrit for stamina damage. prevents standing up, some actions that cost stamina, etc, but doesn't force a rest or stop movement</p><h3 id="define/STAMINA_SOFTCRIT_TRADITIONAL"><aside class="declaration">#define </aside>STAMINA_SOFTCRIT_TRADITIONAL
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L111">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 111"/></a>
+    </h3>
+    <p>same as STAMINA_SOFTCRIT except for the more traditional health calculations</p><h3 id="define/STAM_CRIT_GUN_DELAY"><aside class="declaration">#define </aside>STAM_CRIT_GUN_DELAY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L309">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 309"/></a>
+    </h3>
+    <p>Added delay when firing guns stam-softcritted. Summed with a hardset CLICK_CD_RANGE delay, similar to STAM_CRIT_DAMAGE_DELAY otherwise.</p><h3 id="define/STAM_CRIT_ITEM_ATTACK_DELAY"><aside class="declaration">#define </aside>STAM_CRIT_ITEM_ATTACK_DELAY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L305">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 305"/></a>
+    </h3>
+    <p>changeNext_move penalty multiplier of the above.</p><h3 id="define/STAM_CRIT_ITEM_ATTACK_PENALTY"><aside class="declaration">#define </aside>STAM_CRIT_ITEM_ATTACK_PENALTY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L303">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 303"/></a>
+    </h3>
+    <p>Multiplier of the (STAMINA_NEAR_CRIT - user current stamina loss) : (STAMINA_NEAR_CRIT - STAMINA_SOFTCRIT) ratio used in damage penalties when stam soft-critted.</p><h3 id="define/SUPPRESSED_QUIET"><aside class="declaration">#define </aside>SUPPRESSED_QUIET
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L221">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 221"/></a>
+    </h3>
+    <p>standard suppressed</p><h3 id="define/SUPPRESSED_VERY"><aside class="declaration">#define </aside>SUPPRESSED_VERY
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L222">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 222"/></a>
+    </h3>
+    <p>no message</p><h3 id="define/ZONE_WEIGHT_AUTOMATIC"><aside class="declaration">#define </aside>ZONE_WEIGHT_AUTOMATIC
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L732">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 732"/></a>
+    </h3>
+    <p>Heavily weights limbs after its effective distance</p><h3 id="define/ZONE_WEIGHT_FALLOFF_AUTOMATIC"><aside class="declaration">#define </aside>ZONE_WEIGHT_FALLOFF_AUTOMATIC
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L741">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 741"/></a>
+    </h3>
+    <p>Zone accuracy falls off quickly</p><h3 id="define/ZONE_WEIGHT_FALLOFF_SEMI_AUTO"><aside class="declaration">#define </aside>ZONE_WEIGHT_FALLOFF_SEMI_AUTO
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L739">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 739"/></a>
+    </h3>
+    <p>Typical accuracy falloff</p><h3 id="define/ZONE_WEIGHT_FALLOFF_SHOTGUN"><aside class="declaration">#define </aside>ZONE_WEIGHT_FALLOFF_SHOTGUN
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L743">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 743"/></a>
+    </h3>
+    <p>You're hitting limbs most of the time</p><h3 id="define/ZONE_WEIGHT_GUNS_CHOICE"><aside class="declaration">#define </aside>ZONE_WEIGHT_GUNS_CHOICE
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L736">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 736"/></a>
+    </h3>
+    <p>Always defers to the gun's setting, defaults to semi-auto if not defined</p><h3 id="define/ZONE_WEIGHT_LIST_AUTOMATIC"><aside class="declaration">#define </aside>ZONE_WEIGHT_LIST_AUTOMATIC
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L762">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 762"/></a>
+    </h3>
+    <p>Autofire zone weight list</p><h3 id="define/ZONE_WEIGHT_LIST_DEFAULT"><aside class="declaration">#define </aside>ZONE_WEIGHT_LIST_DEFAULT
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L746">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 746"/></a>
+    </h3>
+    <p>Default zone weight list</p><h3 id="define/ZONE_WEIGHT_LIST_PRECISION"><aside class="declaration">#define </aside>ZONE_WEIGHT_LIST_PRECISION
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L754">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 754"/></a>
+    </h3>
+    <p>Precision zone weight list</p><h3 id="define/ZONE_WEIGHT_LIST_SHOTGUN"><aside class="declaration">#define </aside>ZONE_WEIGHT_LIST_SHOTGUN
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L770">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 770"/></a>
+    </h3>
+    <p>Pellet zone weight list / Who actually aims for LEGS with a shotgun aim for center mass</p><h3 id="define/ZONE_WEIGHT_PRECISION"><aside class="declaration">#define </aside>ZONE_WEIGHT_PRECISION
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L728">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 728"/></a>
+    </h3>
+    <p>Bullet zone favoring defines
+High accuracy, generally goes where you mean to put it, for precision rifles and such</p><h3 id="define/ZONE_WEIGHT_SEMI_AUTO"><aside class="declaration">#define </aside>ZONE_WEIGHT_SEMI_AUTO
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L730">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 730"/></a>
+    </h3>
+    <p>Typical accuracy, based a bit on range</p><h3 id="define/ZONE_WEIGHT_SHOTGUN"><aside class="declaration">#define </aside>ZONE_WEIGHT_SHOTGUN
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/_combat.dm#L734">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;_combat.dm 734"/></a>
+    </h3>
+    <p>Always weights limbs heavily</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

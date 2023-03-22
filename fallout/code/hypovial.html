@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>fallout&#x2F;code&#x2F;hypovial.txt - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+</header>
+<main>
+<h1>fallout/code/hypovial.txt 
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/hypovial.txt">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;hypovial.txt"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><td colspan="2"><pre><code>//hypovials used with the MkII hypospray. See hypospray.dm.
+
+/obj/item/reagent_containers/glass/bottle/vial // these have literally no fucking right to just be better beakers that you can shit out of a chemmaster
+	name = &quot;broken hypovial&quot;
+	desc = &quot;A hypovial compatible with most hyposprays.&quot;
+	icon_state = &quot;hypovial&quot;
+	spillable = FALSE
+	volume = 10
+	possible_transfer_amounts = list(1,2,5,10)
+	container_flags = APTFT_VERB
+	obj_flags = UNIQUE_RENAME
+	unique_reskin = list(&quot;hypovial&quot; = &quot;hypovial&quot;,
+						&quot;red hypovial&quot; = &quot;hypovial-b&quot;,
+						&quot;blue hypovial&quot; = &quot;hypovial-d&quot;,
+						&quot;green hypovial&quot; = &quot;hypovial-a&quot;,
+						&quot;orange hypovial&quot; = &quot;hypovial-k&quot;,
+						&quot;purple hypovial&quot; = &quot;hypovial-p&quot;,
+						&quot;black hypovial&quot; = &quot;hypovial-t&quot;,
+						&quot;pink hypovial&quot; = &quot;hypovial-pink&quot;
+						)
+	always_reskinnable = TRUE
+	cached_icon = &quot;hypovial&quot;
+
+/obj/item/reagent_containers/glass/bottle/vial/Initialize()
+	. = ..()
+	update_icon()
+
+/obj/item/reagent_containers/glass/bottle/vial/on_reagent_change()
+	update_icon()
+
+/obj/item/reagent_containers/glass/bottle/vial/tiny
+	name = &quot;small hypovial&quot;
+	//Shouldn't be possible to get this without adminbuse
+
+/obj/item/reagent_containers/glass/bottle/vial/small
+	name = &quot;hypovial&quot;
+	volume = 60
+	possible_transfer_amounts = list(1,2,5,10,20)
+
+/obj/item/reagent_containers/glass/bottle/vial/small/bluespace
+	volume = 120
+	possible_transfer_amounts = list(1,2,5,10,20)
+	name = &quot;bluespace hypovial&quot;
+	icon_state = &quot;hypovialbs&quot;
+	unique_reskin = null
+
+/obj/item/reagent_containers/glass/bottle/vial/large
+	name = &quot;large hypovial&quot;
+	desc = &quot;A large hypovial, for deluxe hypospray models.&quot;
+	icon_state = &quot;hypoviallarge&quot;
+	volume = 120
+	possible_transfer_amounts = list(1,2,5,10,20)
+	unique_reskin = list(&quot;large hypovial&quot; = &quot;hypoviallarge&quot;,
+						&quot;large red hypovial&quot; = &quot;hypoviallarge-b&quot;,
+						&quot;large blue hypovial&quot; = &quot;hypoviallarge-d&quot;,
+						&quot;large green hypovial&quot; = &quot;hypoviallarge-a&quot;,
+						&quot;large orange hypovial&quot; = &quot;hypoviallarge-k&quot;,
+						&quot;large purple hypovial&quot; = &quot;hypoviallarge-p&quot;,
+						&quot;large black hypovial&quot; = &quot;hypoviallarge-t&quot;
+						)
+	cached_icon = &quot;hypoviallarge&quot;
+
+/obj/item/reagent_containers/glass/bottle/vial/large/bluespace
+	possible_transfer_amounts = list(1,2,5,10,20)
+	name = &quot;bluespace large hypovial&quot;
+	volume = 240
+	icon_state = &quot;hypoviallargebs&quot;
+	unique_reskin = null
+
+
+/obj/item/reagent_containers/glass/bottle/vial/small/bicaridine
+	name = &quot;red hypovial (bicaridine)&quot;
+	icon_state = &quot;hypovial-b&quot;
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 30)
+
+/obj/item/reagent_containers/glass/bottle/vial/small/antitoxin
+	name = &quot;green hypovial (Anti-Tox)&quot;
+	icon_state = &quot;hypovial-a&quot;
+	list_reagents = list(/datum/reagent/medicine/antitoxin = 30)
+
+/obj/item/reagent_containers/glass/bottle/vial/small/kelotane
+	name = &quot;orange hypovial (kelotane)&quot;
+	icon_state = &quot;hypovial-k&quot;
+	list_reagents = list(/datum/reagent/medicine/kelotane = 30)
+
+/obj/item/reagent_containers/glass/bottle/vial/small/dexalin
+	name = &quot;blue hypovial (dexalin)&quot;
+	icon_state = &quot;hypovial-d&quot;
+	list_reagents = list(/datum/reagent/medicine/dexalin = 30)
+
+/obj/item/reagent_containers/glass/bottle/vial/small/tricord
+	name = &quot;hypovial (tricordrazine)&quot;
+	icon_state = &quot;hypovial&quot;
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 30)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/CMO
+	name = &quot;deluxe hypovial&quot;
+	icon_state = &quot;hypoviallarge-cmos&quot;
+	list_reagents = list(/datum/reagent/medicine/omnizine = 20, /datum/reagent/medicine/leporazine = 20, /datum/reagent/medicine/atropine = 20)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/bicaridine
+	name = &quot;large red hypovial (bicaridine)&quot;
+	icon_state = &quot;hypoviallarge-b&quot;
+	list_reagents = list(/datum/reagent/medicine/bicaridine = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/antitoxin
+	name = &quot;large green hypovial (anti-tox)&quot;
+	icon_state = &quot;hypoviallarge-a&quot;
+	list_reagents = list(/datum/reagent/medicine/antitoxin = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/kelotane
+	name = &quot;large orange hypovial (kelotane)&quot;
+	icon_state = &quot;hypoviallarge-k&quot;
+	list_reagents = list(/datum/reagent/medicine/kelotane = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/dexalin
+	name = &quot;large blue hypovial (dexalin)&quot;
+	icon_state = &quot;hypoviallarge-d&quot;
+	list_reagents = list(/datum/reagent/medicine/dexalin = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/charcoal
+	name = &quot;large black hypovial (charcoal)&quot;
+	icon_state = &quot;hypoviallarge-t&quot;
+	list_reagents = list(/datum/reagent/medicine/charcoal = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/tricord
+	name = &quot;large hypovial (tricord)&quot;
+	icon_state = &quot;hypoviallarge&quot;
+	list_reagents = list(/datum/reagent/medicine/tricordrazine = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/salglu
+	name = &quot;large green hypovial (salglu)&quot;
+	icon_state = &quot;hypoviallarge-a&quot;
+	list_reagents = list(/datum/reagent/medicine/salglu_solution = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/synthflesh
+	name = &quot;large orange hypovial (synthflesh)&quot;
+	icon_state = &quot;hypoviallarge-k&quot;
+	list_reagents = list(/datum/reagent/medicine/synthflesh = 60)
+
+/obj/item/reagent_containers/glass/bottle/vial/large/combat
+	name = &quot;combat hypovial&quot;
+	icon_state = &quot;hypoviallarge-t&quot;
+	list_reagents = list(/datum/reagent/medicine/epinephrine = 3, /datum/reagent/medicine/omnizine = 19, /datum/reagent/medicine/leporazine = 19, /datum/reagent/medicine/atropine = 19) //Epinephrine's main effect here is to kill suff damage, so we don't need much given atropine
+</code></pre></td></tr></table></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

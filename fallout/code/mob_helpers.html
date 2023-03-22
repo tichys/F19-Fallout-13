@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>fallout&#x2F;code&#x2F;mob_helpers.txt - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+</header>
+<main>
+<h1>fallout/code/mob_helpers.txt 
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/mob_helpers.txt">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;mob_helpers.txt"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><td colspan="2"><pre><code>//change a mob's act-intent. Input the intent as a string such as &quot;help&quot; or use &quot;right&quot;/&quot;left
+/mob/verb/a_intent_change(input as text)
+	set name = &quot;a-intent&quot;
+	set hidden = 1
+
+	if(!possible_a_intents || !possible_a_intents.len)
+		return
+
+	if(input in possible_a_intents)
+		a_intent = input
+	else
+		var/current_intent = possible_a_intents.Find(a_intent)
+
+		if(!current_intent)
+			// Failsafe. Just in case some badmin was playing with VV.
+			current_intent = 1
+
+		if(input == INTENT_HOTKEY_RIGHT)
+			current_intent += 1
+		if(input == INTENT_HOTKEY_LEFT)
+			current_intent -= 1
+
+		// Handle looping
+		if(current_intent &lt; 1)
+			current_intent = possible_a_intents.len
+		if(current_intent &gt; possible_a_intents.len)
+			current_intent = 1
+
+		a_intent = possible_a_intents[current_intent]
+
+	if(hud_used &amp;&amp; hud_used.action_intent)
+		hud_used.action_intent.icon_state = &quot;[a_intent]&quot;
+</code></pre></td></tr></table></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

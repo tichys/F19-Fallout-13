@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>code&#x2F;__DEFINES&#x2F;_helpers.dm - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="code/__DEFINES/_helpers.html#define">Define Details</a></header>
+<main>
+<h1>code/__DEFINES/_helpers.dm 
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm"/></a></h1>
+
+<table class="summary" cellspacing="0">
+        <tr><th><a href="code/__DEFINES/_helpers.html#define/STRINGIFY">STRINGIFY</a></th><td>Stringifies whatever you put into it.</td></tr>
+        <tr><th><a href="code/__DEFINES/_helpers.html#define/subtypesof">subtypesof</a></th><td>subtypesof(), typesof() without the parent path</td></tr>
+        <tr><th><a href="code/__DEFINES/_helpers.html#define/UNTIL">UNTIL</a></th><td>Until a condition is true, sleep</td></tr>
+        <tr><th><a href="code/__DEFINES/_helpers.html#define/text_ref">text_ref</a></th><td>Takes a datum as input, returns its ref string, or a cached version of it
+This allows us to cache \ref creation, which ensures it'll only ever happen once per datum, saving string tree time
+It is slightly less optimal then a []'d datum, but the cost is massively outweighed by the potential savings
+It will only work for datums mind, for datum reasons
+: because of the embedded typecheck</td></tr>
+        <tr><th><a href="code/__DEFINES/_helpers.html#define/GET_DIST_EUCLIDEAN">GET_DIST_EUCLIDEAN</a></th><td>Returns the euclidean distance between two objects.</td></tr></table><h2 id="define">Define Details</h2>
+<h3 id="define/GET_DIST_EUCLIDEAN"><aside class="declaration">#define </aside>GET_DIST_EUCLIDEAN
+            <aside>(source, target)</aside>
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm#L36">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm 36"/></a>
+    </h3>
+    <p>Returns the euclidean distance between two objects.</p>
+<p>Only works for turfs and things whose loc is a turf, this needs to be checked for proper results.
+Things inside backpacks and other containers can have their x and y values set to zero.</p>
+<p>This is useful because get_dist() makes no differentiation between cardinal and diagonal moves, but this one does.
+A major difference is that this will result in rational numbers, while get_dist() will only produce integers.</p><h3 id="define/STRINGIFY"><aside class="declaration">#define </aside>STRINGIFY
+            <aside>(argument)</aside>
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm#L12">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm 12"/></a>
+    </h3>
+    <p>Stringifies whatever you put into it.</p><h3 id="define/UNTIL"><aside class="declaration">#define </aside>UNTIL
+            <aside>(X)</aside>
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm#L18">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm 18"/></a>
+    </h3>
+    <p>Until a condition is true, sleep</p><h3 id="define/subtypesof"><aside class="declaration">#define </aside>subtypesof
+            <aside>(typepath)</aside>
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm#L15">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm 15"/></a>
+    </h3>
+    <p>subtypesof(), typesof() without the parent path</p><h3 id="define/text_ref"><aside class="declaration">#define </aside>text_ref
+            <aside>(datum)</aside>
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/__DEFINES/_helpers.dm#L25">
+        <img src="git.png" width="16" height="16" title="code&#x2F;__DEFINES&#x2F;_helpers.dm 25"/></a>
+    </h3>
+    <p>Takes a datum as input, returns its ref string, or a cached version of it
+This allows us to cache \ref creation, which ensures it'll only ever happen once per datum, saving string tree time
+It is slightly less optimal then a []'d datum, but the cost is massively outweighed by the potential savings
+It will only work for datums mind, for datum reasons
+: because of the embedded typecheck</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>

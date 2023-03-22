@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <base href="../../" />
+    <link rel="stylesheet" href="dmdoc.css" />
+    <title>&#x2F;obj&#x2F;item&#x2F;gun - &#x2F;tg&#x2F; Station 13</title>
+</head>
+<body>
+<header>
+    <a href="index.html">&#x2F;tg&#x2F; Station 13</a> -
+    <a href="index.html#modules">Modules</a> -
+    <a href="index.html#types">Types</a>
+ &mdash; <a href="obj/item/gun.html#var">Var Details</a> - <a href="obj/item/gun.html#proc">Proc Details</a></header>
+<main>
+<h1>gun <aside>/<a href="obj.html">obj</a>/<a href="obj/item.html">item</a>/<a href="obj/item/gun.html">gun</a></aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L5">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 5"/></a></h1>
+
+<table class="summary" cellspacing="0"><tr><td colspan="2"><h2>Vars</h2></td></tr>
+            <tr><th><a href="obj/item/gun.html#var/busy_action">busy_action</a></th><td>Used in gun-in-mouth execution/suicide and similar, while TRUE nothing should work on this like firing or modification and so on and so forth.</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/can_circuit">can_circuit</a></th><td>can we be put in a circuit</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/can_emitter">can_emitter</a></th><td>can we be put in an emitter</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/can_hold_up">can_hold_up</a></th><td>Can we hold up our target with this? Default to yes</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/can_turret">can_turret</a></th><td>can we be put into a turret</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/cooldown_delay_mods">cooldown_delay_mods</a></th><td>What kind of temporary refire delay modifiers do we have?</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/draw_time">draw_time</a></th><td>Time it takes between drawing the gun and shooting the gun</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/extra_speed">extra_speed</a></th><td>used for inaccuracy and wielding requirements/penalties
+Adds this speed to the bullet, in pixels per second</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/firing">firing</a></th><td>Currently firing, whether or not it's a burst or not.</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/gun_accuracy_zone_type">gun_accuracy_zone_type</a></th><td>How should this gun prefer to weight what limbs they hit</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/gun_skill_check">gun_skill_check</a></th><td>What kind of traits should this gun be affected by</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/last_fire">last_fire</a></th><td>Last world.time this was fired</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/pinless">pinless</a></th><td>True if a gun dosen't need a pin, mostly used for abstract guns like tentacles and meathooks</td></tr>
+            <tr><th><a href="obj/item/gun.html#var/projectile_damage_multiplier">projectile_damage_multiplier</a></th><td>Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.</td></tr><tr><td colspan="2"><h2>Procs</h2></td></tr>
+            <tr><th><a href="obj/item/gun.html#proc/add_seclight_point">add_seclight_point</a></th><td>Handles adding <a href="datum/component/seclite_attachable.html" title="/datum/component/seclite_attachable">the seclite mount component</a> to the gun.
+If the gun shouldn't have a seclight mount, override this with a return.
+Or, if a child of a gun with a seclite mount has slightly different behavior or icons, extend this.</td></tr>
+            <tr><th><a href="obj/item/gun.html#proc/clear_suppressor">clear_suppressor</a></th><td>Clears var and updates icon. In the case of ballistic weapons, also updates the gun's weight.</td></tr></table>
+    <h2 id="var">Var Details</h2><h3 id="var/busy_action"><aside class="declaration">var </aside>busy_action
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L41">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 41"/></a></h3>
+        <p>Used in gun-in-mouth execution/suicide and similar, while TRUE nothing should work on this like firing or modification and so on and so forth.</p><h3 id="var/can_circuit"><aside class="declaration">var </aside>can_circuit
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L31">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 31"/></a></h3>
+        <p>can we be put in a circuit</p><h3 id="var/can_emitter"><aside class="declaration">var </aside>can_emitter
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L33">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 33"/></a></h3>
+        <p>can we be put in an emitter</p><h3 id="var/can_hold_up"><aside class="declaration">var </aside>can_hold_up
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L45">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 45"/></a></h3>
+        <p>Can we hold up our target with this? Default to yes</p><h3 id="var/can_turret"><aside class="declaration">var </aside>can_turret
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L29">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 29"/></a></h3>
+        <p>can we be put into a turret</p><h3 id="var/cooldown_delay_mods"><aside class="declaration">var </aside>cooldown_delay_mods
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L116">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 116"/></a></h3>
+        <p>What kind of temporary refire delay modifiers do we have?</p><h3 id="var/draw_time"><aside class="declaration">var </aside>draw_time
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L17">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 17"/></a></h3>
+        <p>Time it takes between drawing the gun and shooting the gun</p><h3 id="var/extra_speed"><aside class="declaration">var </aside>extra_speed
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L44">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 44"/></a></h3>
+        <p>used for inaccuracy and wielding requirements/penalties
+Adds this speed to the bullet, in pixels per second</p><h3 id="var/firing"><aside class="declaration">var </aside>firing
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L39">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 39"/></a></h3>
+        <p>Currently firing, whether or not it's a burst or not.</p><h3 id="var/gun_accuracy_zone_type"><aside class="declaration">var </aside>gun_accuracy_zone_type
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L112">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 112"/></a></h3>
+        <p>How should this gun prefer to weight what limbs they hit</p><h3 id="var/gun_skill_check"><aside class="declaration">var </aside>gun_skill_check
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L114">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 114"/></a></h3>
+        <p>What kind of traits should this gun be affected by</p><h3 id="var/last_fire"><aside class="declaration">var </aside>last_fire
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/fallout/code/gun.dm#L37">
+        <img src="git.png" width="16" height="16" title="fallout&#x2F;code&#x2F;gun.dm 37"/></a></h3>
+        <p>Last world.time this was fired</p><h3 id="var/pinless"><aside class="declaration">var </aside>pinless
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L58">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 58"/></a></h3>
+        <p>True if a gun dosen't need a pin, mostly used for abstract guns like tentacles and meathooks</p><h3 id="var/projectile_damage_multiplier"><aside class="declaration">var </aside>projectile_damage_multiplier
+            <aside>&ndash; </aside>
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L48">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 48"/></a></h3>
+        <p>Just 'slightly' snowflakey way to modify projectile damage for projectiles fired from this gun.</p><h2 id="proc">Proc Details</h2><h3 id="proc/add_seclight_point"><aside class="declaration">proc </aside>add_seclight_point<aside>() 
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L91">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 91"/></a></aside>
+        </h3>
+        <p>Handles adding <a href="datum/component/seclite_attachable.html" title="/datum/component/seclite_attachable">the seclite mount component</a> to the gun.
+If the gun shouldn't have a seclight mount, override this with a return.
+Or, if a child of a gun with a seclite mount has slightly different behavior or icons, extend this.</p><h3 id="proc/clear_suppressor"><aside class="declaration">proc </aside>clear_suppressor<aside>() 
+        
+    
+            <a href="https://github.com/tichys/F19-Fallout-13/blob/293f1a82c7614ff15e04a63157ec6fda21470846/code/modules/projectiles/gun.dm#L107">
+        <img src="git.png" width="16" height="16" title="code&#x2F;modules&#x2F;projectiles&#x2F;gun.dm 107"/></a></aside>
+        </h3>
+        <p>Clears var and updates icon. In the case of ballistic weapons, also updates the gun's weight.</p></main>
+<footer>
+    tgstation.dme
+    <a href="https://github.com/tichys/F19-Fallout-13/tree/293f1a82c7614ff15e04a63157ec6fda21470846">293f1a8</a>
+        (main) &mdash; <a href="https://github.com/SpaceManiac/SpacemanDMM/blob/master/src/dmdoc/README.md">dmdoc 1.4.1</a></footer>
+</body>
+</html>
